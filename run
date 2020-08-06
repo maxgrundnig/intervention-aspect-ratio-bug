@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+require 'vendor/autoload.php';
+
+const INPUT_NAME    = __DIR__ . '/assets/input.jpg';
+const OUTPUT_NAME_1 = __DIR__ . '/assets/output1.jpg';
+const OUTPUT_NAME_2 = __DIR__ . '/assets/output2.jpg';
+const OUTPUT_NAME_3 = __DIR__ . '/assets/output3.jpg';
+
+use Intervention\Image\ImageManager;
+
+$manager = new ImageManager([
+    'driver' => 'imagick',
+]);
+
+if (file_exists(OUTPUT_NAME_1)) {
+    unlink(OUTPUT_NAME_1);
+}
+
+if (file_exists(OUTPUT_NAME_2)) {
+    unlink(OUTPUT_NAME_2);
+}
+
+if (file_exists(OUTPUT_NAME_3)) {
+    unlink(OUTPUT_NAME_3);
+}
+
+$image = $manager->make(INPUT_NAME);
+$image->resize(100, null, function ($constraint) {
+    $constraint->aspectRatio();
+})->save(OUTPUT_NAME_1);
+
+$image = $manager->make(INPUT_NAME);
+$image->resize(100, 130, function ($constraint) {
+    $constraint->aspectRatio();
+})->save(OUTPUT_NAME_2);
+
+$image = $manager->make(INPUT_NAME);
+$image->resize(100, 131, function ($constraint) {
+    $constraint->aspectRatio();
+})->save(OUTPUT_NAME_3);
